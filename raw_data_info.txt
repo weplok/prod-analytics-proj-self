@@ -1,0 +1,4 @@
+usertype: "Customer" or "casual" is a rider who purchased a 24-Hour Pass;
+"Subscriber" or "member" is a rider who purchased an Annual Membership
+
+Gender and birthday are only available for Subscribers (до 2019 года включительно. после - не логировалось)
