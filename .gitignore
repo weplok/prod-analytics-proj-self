@@ -162,5 +162,6 @@ cython_debug/
 .idea/
 
 # Datasets
-# Для получения датасета, последовательно запустить parser.py и unzip.py
+# Для получения датасета, последовательно запустить parser.py, unzip.py и concat_to_year.py
 raw_data
+datasets
