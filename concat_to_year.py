@@ -1,6 +1,7 @@
 import pandas as pd
 
-'''
+
+# 2024 ГОД
 df = pd.DataFrame(columns=["ride_id" ,"rideable_type", "started_at", "ended_at", "start_station_name",
                            "start_station_id", "end_station_name", "end_station_id", "start_lat",
                            "start_lng", "end_lat", "end_lng", "member_casual"])
@@ -8,9 +9,10 @@ for month in ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10"]:
     df_month = pd.read_csv(f"raw_data/2024{month}-divvy-tripdata.csv")
     df = pd.concat([df, df_month])
 df = df.reset_index().set_index("ride_id").drop('index', axis=1)
-df.to_csv("datasets/tripdata-2024.csv")'''
+df.to_csv("datasets/tripdata-2024.csv")
+# 2024 ГОД
 
-'''
+# 2023 ГОД
 df = pd.DataFrame(columns=["ride_id" ,"rideable_type", "started_at", "ended_at", "start_station_name",
                            "start_station_id", "end_station_name", "end_station_id", "start_lat",
                            "start_lng", "end_lat", "end_lng", "member_casual"])
@@ -18,9 +20,10 @@ for month in ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", 
     df_month = pd.read_csv(f"raw_data/2023{month}-divvy-tripdata.csv")
     df = pd.concat([df, df_month])
 df = df.reset_index().set_index("ride_id").drop('index', axis=1)
-df.to_csv("datasets/tripdata-2023.csv")'''
+df.to_csv("datasets/tripdata-2023.csv")
+# 2023 ГОД
 
-'''
+# 2022 ГОД
 df = pd.DataFrame(columns=["ride_id" ,"rideable_type", "started_at", "ended_at", "start_station_name",
                            "start_station_id", "end_station_name", "end_station_id", "start_lat",
                            "start_lng", "end_lat", "end_lng", "member_casual"])
@@ -31,9 +34,10 @@ for month in ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", 
         df_month = pd.read_csv("raw_data/202209-divvy-publictripdata.csv")
     df = pd.concat([df, df_month])
 df = df.reset_index().set_index("ride_id").drop('index', axis=1)
-df.to_csv("datasets/tripdata-2022.csv")'''
+df.to_csv("datasets/tripdata-2022.csv")
+# 2022 ГОД
 
-'''
+# 2021 ГОД
 df = pd.DataFrame(columns=["ride_id" ,"rideable_type", "started_at", "ended_at", "start_station_name",
                            "start_station_id", "end_station_name", "end_station_id", "start_lat",
                            "start_lng", "end_lat", "end_lng", "member_casual"])
@@ -41,9 +45,10 @@ for month in ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", 
     df_month = pd.read_csv(f"raw_data/2021{month}-divvy-tripdata.csv")
     df = pd.concat([df, df_month])
 df = df.reset_index().set_index("ride_id").drop('index', axis=1)
-df.to_csv("datasets/tripdata-2021.csv")'''
+df.to_csv("datasets/tripdata-2021.csv")
+# 2021 ГОД
 
-'''
+# 2020 ГОД
 df = pd.DataFrame(columns=["ride_id" ,"rideable_type", "started_at", "ended_at", "start_station_name",
                            "start_station_id", "end_station_name", "end_station_id", "start_lat",
                            "start_lng", "end_lat", "end_lng", "member_casual"])
@@ -53,9 +58,10 @@ for month in ["04", "05", "06", "07", "08", "09", "10", "11", "12"]:
     df_month = pd.read_csv(f"raw_data/2020{month}-divvy-tripdata.csv")
     df = pd.concat([df, df_month])
 df = df.reset_index().set_index("ride_id").drop('index', axis=1)
-df.to_csv("datasets/tripdata-2020.csv")'''
+df.to_csv("datasets/tripdata-2020.csv")
+# 2020 ГОД
 
-'''
+# 2013 ГОД
 df = pd.DataFrame(columns=["ride_id", "started_at", "ended_at", "start_station_name",
                            "start_station_id", "end_station_name", "end_station_id", "start_lat",
                            "start_lng", "end_lat", "end_lng", "member_casual"])
@@ -70,6 +76,7 @@ df_quart.rename(columns={
     "to_station_id": "end_station_id",
     "to_station_name": "end_station_name",
     "usertype": "member_casual",
+    "birthday": "birthyear"
 }, inplace=True)
 df_quart = pd.merge(df_quart, df_stations, left_on="start_station_id", right_on="id", how="left")
 df_quart.rename(columns={
@@ -92,9 +99,12 @@ df_quart = df_quart[["ride_id", "started_at", "ended_at", "start_station_name", 
 
 df = pd.concat([df, df_quart])
 df = df.reset_index().set_index("ride_id").drop('index', axis=1)
-df.to_csv("datasets/tripdata-2013.csv")'''
+df.to_csv("datasets/tripdata-2013.csv")
+# 2013 ГОД
 
-'''
+# 2014 ГОД
+data = pd.read_excel('raw_data/Divvy_Stations_2014-Q1Q2.xlsx', engine='openpyxl')
+data.to_csv('raw_data/Divvy_Stations_2014-Q1Q2.csv', index=False)
 df = pd.DataFrame(columns=["ride_id", "started_at", "ended_at", "start_station_name",
                            "start_station_id", "end_station_name", "end_station_id", "start_lat",
                            "start_lng", "end_lat", "end_lng", "member_casual"])
@@ -133,9 +143,10 @@ for quart in ["_Q1Q2", "-Q3-07", "-Q3-0809", "-Q4"]:
                          "end_lng", "member_casual", "gender", "birthyear"]]
     df = pd.concat([df, df_quart])
 df = df.reset_index().set_index("ride_id").drop('index', axis=1)
-df.to_csv("datasets/tripdata-2014.csv")'''
+df.to_csv("datasets/tripdata-2014.csv")
+# 2014 ГОД
 
-'''
+# 2015 ГОД
 df = pd.DataFrame(columns=["ride_id", "started_at", "ended_at", "start_station_name",
                            "start_station_id", "end_station_name", "end_station_id", "start_lat",
                            "start_lng", "end_lat", "end_lng", "member_casual"])
@@ -172,9 +183,10 @@ for quart in ["-Q1", "-Q2", "_07", "_08", "_09", "_Q4"]:
                          "end_lng", "member_casual", "gender", "birthyear"]]
     df = pd.concat([df, df_quart])
 df = df.reset_index().set_index("ride_id").drop('index', axis=1)
-df.to_csv("datasets/tripdata-2015.csv")'''
+df.to_csv("datasets/tripdata-2015.csv")
+# 2015 ГОД
 
-'''
+# 2016 ГОД
 df = pd.DataFrame(columns=["ride_id", "started_at", "ended_at", "start_station_name",
                            "start_station_id", "end_station_name", "end_station_id", "start_lat",
                            "start_lng", "end_lat", "end_lng", "member_casual"])
@@ -214,9 +226,10 @@ for quart in ["_Q1", "_04", "_05", "_06", "_Q3", "_Q4"]:
                          "end_lng", "member_casual", "gender", "birthyear"]]
     df = pd.concat([df, df_quart])
 df = df.reset_index().set_index("ride_id").drop('index', axis=1)
-df.to_csv("datasets/tripdata-2016.csv")'''
+df.to_csv("datasets/tripdata-2016.csv")
+# 2016 ГОД
 
-'''
+# 2017 ГОД
 df = pd.DataFrame(columns=["ride_id", "started_at", "ended_at", "start_station_name",
                            "start_station_id", "end_station_name", "end_station_id", "start_lat",
                            "start_lng", "end_lat", "end_lng", "member_casual"])
@@ -255,9 +268,10 @@ for quart in ["_Q1", "_Q2", "_Q3", "_Q4"]:
                          "end_lng", "member_casual", "gender", "birthyear"]]
     df = pd.concat([df, df_quart])
 df = df.reset_index().set_index("ride_id").drop('index', axis=1)
-df.to_csv("datasets/tripdata-2017.csv")'''
+df.to_csv("datasets/tripdata-2017.csv")
+# 2017 ГОД
 
-'''
+# 2018 ГОД
 df = pd.DataFrame(columns=["ride_id", "started_at", "ended_at", "start_station_name",
                            "start_station_id", "end_station_name", "end_station_id", "start_lat",
                            "start_lng", "end_lat", "end_lng", "member_casual"])
@@ -292,7 +306,6 @@ for quart in ["_Q1", "_Q2", "_Q3", "_Q4"]:
             "01 - Rental Details Bike ID": "bikeid",
             "01 - Rental Details Duration In Seconds Uncapped": "tripduration",
         }, inplace=True)
-        print(df_quart)
     df_quart = pd.merge(df_quart, df_stations, left_on="start_station_id", right_on="id", how="left")
     df_quart.rename(columns={
         "latitude": "start_lat",
@@ -313,9 +326,10 @@ for quart in ["_Q1", "_Q2", "_Q3", "_Q4"]:
                          "end_lng", "member_casual", "gender", "birthyear"]]
     df = pd.concat([df, df_quart])
 df = df.reset_index().set_index("ride_id").drop('index', axis=1)
-df.to_csv("datasets/tripdata-2018.csv")'''
+df.to_csv("datasets/tripdata-2018.csv")
+# 2018 ГОД
 
-
+# 2019 ГОД
 df = pd.DataFrame(columns=["ride_id", "started_at", "ended_at", "start_station_name",
                            "start_station_id", "end_station_name", "end_station_id", "start_lat",
                            "start_lng", "end_lat", "end_lng", "member_casual"])
@@ -371,3 +385,4 @@ for quart in ["_Q1", "_Q2", "_Q3", "_Q4"]:
     df = pd.concat([df, df_quart])
 df = df.reset_index().set_index("ride_id").drop('index', axis=1)
 df.to_csv("datasets/tripdata-2019.csv")
+# 2019 ГОД
