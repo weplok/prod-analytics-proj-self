@@ -3,8 +3,17 @@ import numpy as np
 
 # Тут надо придумать, как заполнить пустые start и end станции
 
+df = pd.read_csv("mdatasets/tripdata-2019.csv")
+print("КОЛ-ВО ПРОПУСКОВ В НАЧАЛЕ", len(df[df["start_lat"].isna()]) + len(df[df["end_lat"].isna()]))
+stations = df[~df["start_lat"].isna()][["start_station_id", "start_station_name", "start_lat", "start_lng"]]
+stations = stations.drop_duplicates(subset=["start_station_id"]).set_index("start_station_id")
+mdf = df.merge(stations, on="start_station_id", how="left", suffixes=("", "_new"))
+df["start_lat"] = df["start_lat"].fillna(mdf["start_lat_new"])
+print(mdf[mdf["start_lat_new"].isna()])
+print("КОЛ-ВО ПРОПУСКОВ В КОНЦЕ", len(df[df["start_lat"].isna()]) + len(df[df["end_lat"].isna()]))
 
 
+'''
 df = pd.read_csv("datasets/tripdata-2023.csv")
 df["start_lat"] = df["start_lat"].transform(lambda x: str(x))
 df["start_lng"] = df["start_lng"].transform(lambda x: str(x))
@@ -37,7 +46,7 @@ print(df)
 print(df[["start_station_id", "start_lat", "start_lng", "end_station_id", "end_lat", "end_lng"]])
 #df.to_csv("tripdata-2020.csv")
 
-'''
+
 df = pd.read_csv("datasets/tripdata-2021.csv")
 stations = df[~df["start_station_name"].isna()][["start_station_id", "start_station_name", "start_lat", "start_lng"]]
 stations = stations.drop_duplicates(subset=["start_station_id"]).reset_index().set_index("start_station_id").drop("index", axis=1)
