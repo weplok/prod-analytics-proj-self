@@ -4,13 +4,25 @@ import numpy as np
 # Тут надо придумать, как заполнить пустые start и end станции
 
 
-'''
-df = pd.read_csv("datasets/tripdata-2020.csv")
+
+df = pd.read_csv("datasets/tripdata-2023.csv")
+df["start_lat"] = df["start_lat"].transform(lambda x: str(x))
+df["start_lng"] = df["start_lng"].transform(lambda x: str(x))
+df["end_lat"] = df["end_lat"].transform(lambda x: str(x))
+df["end_lng"] = df["end_lng"].transform(lambda x: str(x))
+
 stations = df[~df["start_station_name"].isna()][["start_station_id", "start_station_name", "start_lat", "start_lng"]]
 stations = stations.drop_duplicates(subset=["start_station_id"]).reset_index().set_index("start_station_id").drop("index", axis=1)
-stations["start_lat"] = stations["start_lat"].transform(lambda x: round(x, 2))
-stations["start_lng"] = stations["start_lng"].transform(lambda x: round(x, 2))
-print(stations)
+stations["start_lat"] = stations["start_lat"].transform(lambda x: str(round(float(x), 2)))
+stations["start_lng"] = stations["start_lng"].transform(lambda x: str(round(float(x), 2)))
+
+df = df.head(100)
+
+mdf = df.merge(stations, on=["start_lat", "start_lng"], how="left", suffixes=("", "_new"))
+print(mdf)
+df["start_station_id"] = df["start_station_id"].fillna(mdf["start_station_id_new"])
+print(df)
+print("AAAAAAAAAAAAAAAAAAAAa")
 df[df["start_station_name"].isna()] = pd.merge(df[df["start_station_name"].isna()], stations, how="left", on=["start_lat", "start_lng"])
 stations.rename(columns={
     "start_station_id": "end_station_id",
@@ -18,9 +30,13 @@ stations.rename(columns={
     "start_lat": "end_lat",
     "start_lng": "end_lng",
 }, inplace=True)
+print(df[df["end_station_name"].isna()])
 df[df["end_station_name"].isna()] = pd.merge(df[df["end_station_name"].isna()], stations, how="left", on=["end_lat", "end_lng"])
-df.dropna().set_index("ride_id").to_csv("tripdata-2020.csv")
-'''
+df.dropna().set_index("ride_id")
+print(df)
+print(df[["start_station_id", "start_lat", "start_lng", "end_station_id", "end_lat", "end_lng"]])
+#df.to_csv("tripdata-2020.csv")
+
 '''
 df = pd.read_csv("datasets/tripdata-2021.csv")
 stations = df[~df["start_station_name"].isna()][["start_station_id", "start_station_name", "start_lat", "start_lng"]]
