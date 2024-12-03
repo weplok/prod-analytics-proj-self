@@ -52,4 +52,4 @@ for year in range(2013, 2025):
     df["stations_dist"] = stations_dist(df[["start_lat", "start_lng", "end_lat", "end_lng"]])
     df["fact_dist"] = fact_dist(df[["rideable_type", "duration"]])
 
-    df.reset_index().set_index("ride_id").drop('index', axis=1).to_csv(f"datasets/tripdata-{year}.csv")
+    df.reset_index().set_index("ride_id").drop('index', axis=1).to_csv(f"mdatasets/tripdata-{year}.csv")
