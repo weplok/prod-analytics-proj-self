@@ -54,20 +54,15 @@ def member_casual_costs(output_mart):
 
 
 def rides_per_day(output_mart):
-    data = list()
-    year_ts = {2013: 1356984000, 2014: 1388520000, 2015: 1420059600, 2016: 1451595600,
-               2017: 1483218000, 2018: 1514754000, 2019: 1546290000, 2020: 1577826000,
-               2021: 1609448400, 2022: 1640984400, 2023: 1672520400, 2024: 1704056400,
-               2025: 1735678800}
-    for year in range(2013, 2021):
+    ans = pd.DataFrame(columns=["ride_id", "cost"])
+    for year in range(2013, 2025):
         df = pd.read_csv(f"mdatasets/tripdata-{year}.csv")
-        for day in range(year_ts[year], year_ts[year + 1], 86400):
-            day_df = df[df.started_at >= day][df.started_at < day + 86400]
-            data.append([date.fromtimestamp(day), len(day_df), day_df["cost"].sum()])
-        del df
-    ans = pd.DataFrame(columns=["day", "rides_count", "day_costs"], data=data)
-    print(ans)
-    ans.set_index("day").to_csv(output_mart)
+        agg = df.groupby("start_date").agg({"ride_id": "count", "cost": "sum"})
+        ans = pd.concat([ans, agg])
+    ans = ans.reset_index()
+    ans.rename(columns={"index": "start_date", "ride_id": "count_rides", "cost": "sum_costs"}, inplace=True)
+    ans = ans.dropna(axis=0)
+    ans.to_csv(output_mart)
 
 
 if __name__ == "__main__":
