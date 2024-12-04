@@ -46,7 +46,7 @@ def fact_dist(ride_df):
     return ride_df.reset_index()["duration"].transform(int)
 
 
-for year in range(2013, 2025):
+for year in range(2022, 2025):
     df = pd.read_csv(f"datasets/tripdata-{year}.csv")
 
     df["stations_dist"] = stations_dist(df[["start_lat", "start_lng", "end_lat", "end_lng"]])

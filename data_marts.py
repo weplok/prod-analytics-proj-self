@@ -42,7 +42,7 @@ def ride_count(output_mart):
 def member_casual_costs(output_mart):
     data = list()
     for year in range(2013, 2025):
-        df = pd.read_csv(f"datasets/tripdata-{year}.csv")
+        df = pd.read_csv(f"mdatasets/tripdata-{year}.csv")
         for rt in ["docked_bike", "classic_bike", "electric_bike"]:
             rt_df = df[df.rideable_type == rt]
             member_cost = round(rt_df[rt_df.member_casual == "member"]["cost"].sum())
@@ -60,7 +60,7 @@ def rides_per_day(output_mart):
                2021: 1609448400, 2022: 1640984400, 2023: 1672520400, 2024: 1704056400,
                2025: 1735678800}
     for year in range(2013, 2021):
-        df = pd.read_csv(f"datasets/tripdata-{year}.csv")
+        df = pd.read_csv(f"mdatasets/tripdata-{year}.csv")
         for day in range(year_ts[year], year_ts[year + 1], 86400):
             day_df = df[df.started_at >= day][df.started_at < day + 86400]
             data.append([date.fromtimestamp(day), len(day_df), day_df["cost"].sum()])

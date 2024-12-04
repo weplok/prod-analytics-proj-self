@@ -165,3 +165,5 @@ cython_debug/
 # Для получения датасета, последовательно запустить parser.py, unzip.py и concat_to_year.py
 raw_data
 datasets
+mdatasets
+data_marts

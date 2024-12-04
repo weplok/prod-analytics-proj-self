@@ -61,7 +61,7 @@ def concat_2020():
     df.to_csv("datasets/tripdata-2020.csv")
 
 
-def concat_2023():
+def concat_2013():
     df = pd.DataFrame(columns=["ride_id", "started_at", "ended_at", "start_station_name",
                                "start_station_id", "end_station_name", "end_station_id", "start_lat",
                                "start_lng", "end_lat", "end_lng", "member_casual"])
@@ -387,4 +387,9 @@ def concat_2019():
     df.to_csv("datasets/tripdata-2019.csv")
 
 
-concat_2020()
+if __name__ == "__main__":
+    concat_2020()
+    concat_2021()
+    concat_2022()
+    concat_2023()
+    concat_2024()
