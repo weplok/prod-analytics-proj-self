@@ -1,13 +1,19 @@
+from matplotlib import pyplot as plt
 import pandas as pd
-import datetime as dt
 
 
-df = pd.read_csv("2023-divvy-tripdata.csv")
-df["duration"] = ((df["ended_at"]
-                  .transform(lambda x: dt.datetime.fromisoformat(x).timestamp()) -
-                  df["started_at"]
-                  .transform(lambda x: dt.datetime.fromisoformat(x).timestamp()))
-                  / 60 + 1
-                  ).transform(lambda x: int(x))
+def day_rides_costs():
+    df = pd.read_csv("data_marts/rides_per_day.csv")
+    x = df["sum_costs"]
+    y = df["count_rides"]
+    plt.figure(figsize=(15, 10))
+    plt.scatter(x, y)
+    plt.show()
 
-print(df)
+
+df = pd.read_csv("datasets/tripdata-full.csv")
+dur = df[["started_at", "duration"]]
+del df
+plt.figure(figsize=(20, 10))
+plt.scatter(dur["started_at"], dur["duration"])
+plt.show()

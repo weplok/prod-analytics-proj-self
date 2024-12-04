@@ -59,6 +59,7 @@ def rides_per_day(output_mart):
         df = pd.read_csv(f"mdatasets/tripdata-{year}.csv")
         agg = df.groupby("start_date").agg({"ride_id": "count", "cost": "sum"})
         ans = pd.concat([ans, agg])
+        del df
     ans = ans.reset_index()
     ans.rename(columns={"index": "start_date", "ride_id": "count_rides", "cost": "sum_costs"}, inplace=True)
     ans = ans.dropna(axis=0)
@@ -66,7 +67,7 @@ def rides_per_day(output_mart):
 
 
 if __name__ == "__main__":
-    #stations_fact_dist("data_marts/stations_fact_dist.csv")
+    stations_fact_dist("data_marts/stations_fact_dist.csv")
     #ride_count("data_marts/member_casual_rides.csv")
-    #member_casual_costs("data_marts/member_casual_cost.csv")
+    member_casual_costs("data_marts/member_casual_cost.csv")
     rides_per_day("data_marts/rides_per_day.csv")
