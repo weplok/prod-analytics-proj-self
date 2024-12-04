@@ -59,3 +59,4 @@ df["cost"] = df_copy.map(add_cost)
 print(df.head(15))
 
 df.reset_index().set_index("ride_id").drop('index', axis=1).to_csv("datasets/tripdata-2022.csv")
+del df, df_copy
