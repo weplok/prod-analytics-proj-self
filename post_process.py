@@ -2,7 +2,7 @@ import pandas as pd
 from datetime import datetime as dt
 
 
-for year in range(2013, 2020):
+for year in range(2013, 2025):
     df = pd.read_csv(f"datasets/tripdata-{year}.csv")
 
     if year == 2013 or year >= 2018:
@@ -25,4 +25,5 @@ for year in range(2013, 2020):
     df["duration"] = round((df["ended_at"] - df["started_at"]) / 60, 2)
     df = df.sort_values(by="started_at")
 
-    df.reset_index().set_index("ride_id").drop('index', axis=1).to_csv(f"tripdata-{year}.csv")
+    df.reset_index().set_index("ride_id").drop('index', axis=1).to_csv(f"datasets/tripdata-{year}.csv")
+    del df

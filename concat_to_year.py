@@ -388,6 +388,13 @@ def concat_2019():
 
 
 if __name__ == "__main__":
+    concat_2013()
+    concat_2014()
+    concat_2015()
+    concat_2016()
+    concat_2017()
+    concat_2018()
+    concat_2019()
     concat_2020()
     concat_2021()
     concat_2022()
