@@ -66,6 +66,55 @@ def rides_per_day(output_mart):
     ans.to_csv(output_mart)
 
 
+def day_rides_costs():
+    df = pd.read_csv("data_marts/rides_per_day.csv")
+    x = df["sum_costs"]
+    y = df["count_rides"]
+    plt.figure(figsize=(15, 10))
+    plt.scatter(x, y)
+    plt.show()
+
+def durations():
+    df = pd.read_csv("mdatasets/tripdata-full.csv")
+    dur = df[["ride_id", "start_date", "duration", "cost"]]
+    del df
+    dur_bad = dur[dur.duration < 1][dur.duration >= 0]
+    dur_bad.to_csv("data_marts/dur_so_so.csv")
+
+
+def str_values():
+    df = pd.read_csv("mdatasets/tripdata-full.csv")
+    gender = df.groupby("gender").agg({"gender": "count"})
+    mc = df.groupby("member_casual").agg({"member_casual": "count"})
+    by = df.groupby("birthyear").agg({"birthyear": "count"})
+    print(gender)
+    print(mc)
+    by.to_csv("data_marts/birthyear.csv")
+
+
+def big_dist():
+    df = pd.read_csv("mdatasets/tripdata-full.csv")
+    df_big = df[df.stations_dist > 100000]
+    del df
+    df_big.to_csv("data_marts/big_dist.csv")
+
+
+def long_rides():
+    df = pd.read_csv("mdatasets/tripdata-full.csv")
+    df_long = df[df.duration > 43200]
+    del df
+    df_long.to_csv("data_marts/long_rides.csv")
+
+def unreal_socdem():
+    df = pd.read_csv("mdatasets/tripdata-full.csv")
+    df_uoy = df[df.birthyear >= 2013]
+    df_uyy = df[df.birthyear <= 1918]
+    del df
+    df_uy = pd.concat([df_uoy, df_uyy]).sort_values(by="start_date")
+    df_uy.to_csv("data_marts/unreal_birthyear.csv")
+
+
+
 if __name__ == "__main__":
     stations_fact_dist("data_marts/stations_fact_dist.csv")
     #ride_count("data_marts/member_casual_rides.csv")
