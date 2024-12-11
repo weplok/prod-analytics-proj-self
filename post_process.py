@@ -100,10 +100,5 @@ for year in range(2013, 2025):
     if year in range(2018, 2024):
         df = df[df.duration <= 43200]
 
-    # УНИФИЦИРУЕМ ride_id
-    s = df["ride_id"]
-    s = s.map(mapper)
-    df["ride_id"] = s
-
     df.reset_index().set_index("ride_id").drop('index', axis=1).to_csv(f"mdatasets/tripdata-{year}.csv")
     del df
