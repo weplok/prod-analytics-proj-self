@@ -34,18 +34,23 @@ for year in range(2013, 2025):
         col.insert(1, "rideable_type")
         df = df[col]
 
+    # ДОБАВЛЯЕМ соцдем и bike_id, где их нет
+    if 2020 <= year <= 2024:
+        df["gender"] = np.nan
+        df["birthyear"] = np.nan
+        df["bike_id"] = np.nan
+        df_col = df.columns.tolist()
+        df_col.remove("bike_id")
+        df_col.insert(2, "bike_id")
+        df = df[df_col]
+
     # ДОБАВЛЯЕМ дату начала поездки
     start_ts = df["started_at"]
     df["start_date"] = start_ts.transform(lambda x: date.fromtimestamp(x).isoformat())
     df_col = df.columns.tolist()
     df_col.remove("start_date")
-    df_col.insert(2, "start_date")
+    df_col.insert(3, "start_date")
     df = df[df_col]
-
-    # ДОБАВЛЯЕМ соцдем, где его нет
-    if 2020 <= year <= 2024:
-        df["gender"] = np.nan
-        df["birthyear"] = np.nan
 
     # ДОБАВЛЯЕМ длительность поездки
     df["duration"] = round((df["ended_at"] - df["started_at"]) / 60, 2)

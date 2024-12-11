@@ -62,7 +62,7 @@ def concat_2020():
 
 
 def concat_2013():
-    df = pd.DataFrame(columns=["ride_id", "started_at", "ended_at", "start_station_name",
+    df = pd.DataFrame(columns=["ride_id", "bike_id", "started_at", "ended_at", "start_station_name",
                                "start_station_id", "end_station_name", "end_station_id", "start_lat",
                                "start_lng", "end_lat", "end_lng", "member_casual"])
     df_quart = pd.read_csv(f"raw_data/Divvy_Trips_2013.csv")
@@ -71,6 +71,7 @@ def concat_2013():
         "trip_id": "ride_id",
         "starttime": "started_at",
         "stoptime": "ended_at",
+        "bikeid": "bike_id",
         "from_station_id": "start_station_id",
         "from_station_name": "start_station_name",
         "to_station_id": "end_station_id",
@@ -90,10 +91,10 @@ def concat_2013():
         "longitude": "end_lng",
         "id": "id_y",
     }, inplace=True)
-    df_quart = df_quart.drop(columns=["id_x", "id_y", "bikeid", "tripduration"])
+    df_quart = df_quart.drop(columns=["id_x", "id_y", "tripduration"])
     df_quart.loc[df_quart["member_casual"] == "Customer", "member_casual"] = "casual"
     df_quart.loc[df_quart["member_casual"] == "Subscriber", "member_casual"] = "member"
-    df_quart = df_quart[["ride_id", "started_at", "ended_at", "start_station_name", "start_station_id",
+    df_quart = df_quart[["ride_id", "bike_id", "started_at", "ended_at", "start_station_name", "start_station_id",
                         "end_station_name", "end_station_id", "start_lat", "start_lng", "end_lat",
                         "end_lng", "member_casual", "gender", "birthyear"]]
 
@@ -105,7 +106,7 @@ def concat_2013():
 def concat_2014():
     data = pd.read_excel('raw_data/Divvy_Stations_2014-Q1Q2.xlsx', engine='openpyxl')
     data.to_csv('raw_data/Divvy_Stations_2014-Q1Q2.csv', index=False)
-    df = pd.DataFrame(columns=["ride_id", "started_at", "ended_at", "start_station_name",
+    df = pd.DataFrame(columns=["ride_id", "bike_id", "started_at", "ended_at", "start_station_name",
                                "start_station_id", "end_station_name", "end_station_id", "start_lat",
                                "start_lng", "end_lat", "end_lng", "member_casual"])
     df_stations1 = pd.read_csv("raw_data/Divvy_Stations_2014-Q1Q2.csv")[["id", "latitude", "longitude"]]
@@ -117,6 +118,7 @@ def concat_2014():
             "trip_id": "ride_id",
             "starttime": "started_at",
             "stoptime": "ended_at",
+            "bikeid": "bike_id",
             "from_station_id": "start_station_id",
             "from_station_name": "start_station_name",
             "to_station_id": "end_station_id",
@@ -135,10 +137,10 @@ def concat_2014():
             "longitude": "end_lng",
             "id": "id_y",
         }, inplace=True)
-        df_quart = df_quart.drop(columns=["id_x", "id_y", "bikeid", "tripduration"])
+        df_quart = df_quart.drop(columns=["id_x", "id_y", "tripduration"])
         df_quart.loc[df_quart["member_casual"] == "Customer", "member_casual"] = "casual"
         df_quart.loc[df_quart["member_casual"] == "Subscriber", "member_casual"] = "member"
-        df_quart = df_quart[["ride_id", "started_at", "ended_at", "start_station_name", "start_station_id",
+        df_quart = df_quart[["ride_id", "bike_id", "started_at", "ended_at", "start_station_name", "start_station_id",
                              "end_station_name", "end_station_id", "start_lat", "start_lng", "end_lat",
                              "end_lng", "member_casual", "gender", "birthyear"]]
         df = pd.concat([df, df_quart])
@@ -147,7 +149,7 @@ def concat_2014():
 
 
 def concat_2015():
-    df = pd.DataFrame(columns=["ride_id", "started_at", "ended_at", "start_station_name",
+    df = pd.DataFrame(columns=["ride_id", "bike_id", "started_at", "ended_at", "start_station_name",
                                "start_station_id", "end_station_name", "end_station_id", "start_lat",
                                "start_lng", "end_lat", "end_lng", "member_casual"])
     df_stations = pd.read_csv("raw_data/Divvy_Stations_2015.csv")[["id", "latitude", "longitude"]]
@@ -157,6 +159,7 @@ def concat_2015():
             "trip_id": "ride_id",
             "starttime": "started_at",
             "stoptime": "ended_at",
+            "bikeid": "bike_id",
             "from_station_id": "start_station_id",
             "from_station_name": "start_station_name",
             "to_station_id": "end_station_id",
@@ -175,10 +178,10 @@ def concat_2015():
             "longitude": "end_lng",
             "id": "id_y",
         }, inplace=True)
-        df_quart = df_quart.drop(columns=["id_x", "id_y", "bikeid", "tripduration"])
+        df_quart = df_quart.drop(columns=["id_x", "id_y", "tripduration"])
         df_quart.loc[df_quart["member_casual"] == "Customer", "member_casual"] = "casual"
         df_quart.loc[df_quart["member_casual"] == "Subscriber", "member_casual"] = "member"
-        df_quart = df_quart[["ride_id", "started_at", "ended_at", "start_station_name", "start_station_id",
+        df_quart = df_quart[["ride_id", "bike_id", "started_at", "ended_at", "start_station_name", "start_station_id",
                              "end_station_name", "end_station_id", "start_lat", "start_lng", "end_lat",
                              "end_lng", "member_casual", "gender", "birthyear"]]
         df = pd.concat([df, df_quart])
@@ -187,7 +190,7 @@ def concat_2015():
 
 
 def concat_2016():
-    df = pd.DataFrame(columns=["ride_id", "started_at", "ended_at", "start_station_name",
+    df = pd.DataFrame(columns=["ride_id", "bike_id", "started_at", "ended_at", "start_station_name",
                                "start_station_id", "end_station_name", "end_station_id", "start_lat",
                                "start_lng", "end_lat", "end_lng", "member_casual"])
     df_stations1 = pd.read_csv("raw_data/Divvy_Stations_2016_Q1Q2.csv")[["id", "latitude", "longitude"]]
@@ -200,6 +203,7 @@ def concat_2016():
             "trip_id": "ride_id",
             "starttime": "started_at",
             "stoptime": "ended_at",
+            "bikeid": "bike_id",
             "from_station_id": "start_station_id",
             "from_station_name": "start_station_name",
             "to_station_id": "end_station_id",
@@ -218,10 +222,10 @@ def concat_2016():
             "longitude": "end_lng",
             "id": "id_y",
         }, inplace=True)
-        df_quart = df_quart.drop(columns=["id_x", "id_y", "bikeid", "tripduration"])
+        df_quart = df_quart.drop(columns=["id_x", "id_y", "tripduration"])
         df_quart.loc[df_quart["member_casual"] == "Customer", "member_casual"] = "casual"
         df_quart.loc[df_quart["member_casual"] == "Subscriber", "member_casual"] = "member"
-        df_quart = df_quart[["ride_id", "started_at", "ended_at", "start_station_name", "start_station_id",
+        df_quart = df_quart[["ride_id", "bike_id", "started_at", "ended_at", "start_station_name", "start_station_id",
                              "end_station_name", "end_station_id", "start_lat", "start_lng", "end_lat",
                              "end_lng", "member_casual", "gender", "birthyear"]]
         df = pd.concat([df, df_quart])
@@ -230,7 +234,7 @@ def concat_2016():
 
 
 def concat_2017():
-    df = pd.DataFrame(columns=["ride_id", "started_at", "ended_at", "start_station_name",
+    df = pd.DataFrame(columns=["ride_id", "bike_id", "started_at", "ended_at", "start_station_name",
                                "start_station_id", "end_station_name", "end_station_id", "start_lat",
                                "start_lng", "end_lat", "end_lng", "member_casual"])
     df_stations1 = pd.read_csv("raw_data/Divvy_Stations_2017_Q1Q2.csv")[["id", "latitude", "longitude"]]
@@ -242,6 +246,7 @@ def concat_2017():
             "trip_id": "ride_id",
             "start_time": "started_at",
             "end_time": "ended_at",
+            "bikeid": "bike_id",
             "from_station_id": "start_station_id",
             "from_station_name": "start_station_name",
             "to_station_id": "end_station_id",
@@ -260,10 +265,10 @@ def concat_2017():
             "longitude": "end_lng",
             "id": "id_y",
         }, inplace=True)
-        df_quart = df_quart.drop(columns=["id_x", "id_y", "bikeid", "tripduration"])
+        df_quart = df_quart.drop(columns=["id_x", "id_y", "tripduration"])
         df_quart.loc[df_quart["member_casual"] == "Customer", "member_casual"] = "casual"
         df_quart.loc[df_quart["member_casual"] == "Subscriber", "member_casual"] = "member"
-        df_quart = df_quart[["ride_id", "started_at", "ended_at", "start_station_name", "start_station_id",
+        df_quart = df_quart[["ride_id", "bike_id", "started_at", "ended_at", "start_station_name", "start_station_id",
                              "end_station_name", "end_station_id", "start_lat", "start_lng", "end_lat",
                              "end_lng", "member_casual", "gender", "birthyear"]]
         df = pd.concat([df, df_quart])
@@ -272,7 +277,7 @@ def concat_2017():
 
 
 def concat_2018():
-    df = pd.DataFrame(columns=["ride_id", "started_at", "ended_at", "start_station_name",
+    df = pd.DataFrame(columns=["ride_id", "bike_id", "started_at", "ended_at", "start_station_name",
                                "start_station_id", "end_station_name", "end_station_id", "start_lat",
                                "start_lng", "end_lat", "end_lng", "member_casual"])
     df_stations1 = pd.read_csv("raw_data/Divvy_Stations_2017_Q1Q2.csv")[["id", "latitude", "longitude"]]
@@ -285,6 +290,7 @@ def concat_2018():
                 "trip_id": "ride_id",
                 "start_time": "started_at",
                 "end_time": "ended_at",
+                "bikeid": "bike_id",
                 "from_station_id": "start_station_id",
                 "from_station_name": "start_station_name",
                 "to_station_id": "end_station_id",
@@ -296,6 +302,7 @@ def concat_2018():
                 "01 - Rental Details Rental ID": "ride_id",
                 "01 - Rental Details Local Start Time": "started_at",
                 "01 - Rental Details Local End Time": "ended_at",
+                "01 - Rental Details Bike ID": "bike_id",
                 "03 - Rental Start Station ID": "start_station_id",
                 "03 - Rental Start Station Name": "start_station_name",
                 "02 - Rental End Station ID": "end_station_id",
@@ -303,7 +310,6 @@ def concat_2018():
                 "User Type": "member_casual",
                 "Member Gender": "gender",
                 "05 - Member Details Member Birthday Year": "birthyear",
-                "01 - Rental Details Bike ID": "bikeid",
                 "01 - Rental Details Duration In Seconds Uncapped": "tripduration",
             }, inplace=True)
         df_quart = pd.merge(df_quart, df_stations, left_on="start_station_id", right_on="id", how="left")
@@ -318,10 +324,10 @@ def concat_2018():
             "longitude": "end_lng",
             "id": "id_y",
         }, inplace=True)
-        df_quart = df_quart.drop(columns=["id_x", "id_y", "bikeid", "tripduration"])
+        df_quart = df_quart.drop(columns=["id_x", "id_y", "tripduration"])
         df_quart.loc[df_quart["member_casual"] == "Customer", "member_casual"] = "casual"
         df_quart.loc[df_quart["member_casual"] == "Subscriber", "member_casual"] = "member"
-        df_quart = df_quart[["ride_id", "started_at", "ended_at", "start_station_name", "start_station_id",
+        df_quart = df_quart[["ride_id", "bike_id", "started_at", "ended_at", "start_station_name", "start_station_id",
                              "end_station_name", "end_station_id", "start_lat", "start_lng", "end_lat",
                              "end_lng", "member_casual", "gender", "birthyear"]]
         df = pd.concat([df, df_quart])
@@ -330,7 +336,7 @@ def concat_2018():
 
 
 def concat_2019():
-    df = pd.DataFrame(columns=["ride_id", "started_at", "ended_at", "start_station_name",
+    df = pd.DataFrame(columns=["ride_id", "bike_id", "started_at", "ended_at", "start_station_name",
                                "start_station_id", "end_station_name", "end_station_id", "start_lat",
                                "start_lng", "end_lat", "end_lng", "member_casual"])
     df_stations1 = pd.read_csv("raw_data/Divvy_Stations_2017_Q1Q2.csv")[["id", "latitude", "longitude"]]
@@ -343,6 +349,7 @@ def concat_2019():
                 "trip_id": "ride_id",
                 "start_time": "started_at",
                 "end_time": "ended_at",
+                "bikeid": "bike_id",
                 "from_station_id": "start_station_id",
                 "from_station_name": "start_station_name",
                 "to_station_id": "end_station_id",
@@ -354,6 +361,7 @@ def concat_2019():
                 "01 - Rental Details Rental ID": "ride_id",
                 "01 - Rental Details Local Start Time": "started_at",
                 "01 - Rental Details Local End Time": "ended_at",
+                "01 - Rental Details Bike ID":  "bike_id",
                 "03 - Rental Start Station ID": "start_station_id",
                 "03 - Rental Start Station Name": "start_station_name",
                 "02 - Rental End Station ID": "end_station_id",
@@ -361,7 +369,6 @@ def concat_2019():
                 "User Type": "member_casual",
                 "Member Gender": "gender",
                 "05 - Member Details Member Birthday Year": "birthyear",
-                "01 - Rental Details Bike ID": "bikeid",
                 "01 - Rental Details Duration In Seconds Uncapped": "tripduration",
             }, inplace=True)
         df_quart = pd.merge(df_quart, df_stations, left_on="start_station_id", right_on="id", how="left")
@@ -376,10 +383,10 @@ def concat_2019():
             "longitude": "end_lng",
             "id": "id_y",
         }, inplace=True)
-        df_quart = df_quart.drop(columns=["id_x", "id_y", "bikeid", "tripduration"])
+        df_quart = df_quart.drop(columns=["id_x", "id_y", "tripduration"])
         df_quart.loc[df_quart["member_casual"] == "Customer", "member_casual"] = "casual"
         df_quart.loc[df_quart["member_casual"] == "Subscriber", "member_casual"] = "member"
-        df_quart = df_quart[["ride_id", "started_at", "ended_at", "start_station_name", "start_station_id",
+        df_quart = df_quart[["ride_id", "bike_id", "started_at", "ended_at", "start_station_name", "start_station_id",
                              "end_station_name", "end_station_id", "start_lat", "start_lng", "end_lat",
                              "end_lng", "member_casual", "gender", "birthyear"]]
         df = pd.concat([df, df_quart])
@@ -388,15 +395,8 @@ def concat_2019():
 
 
 if __name__ == "__main__":
-    concat_2013()
-    concat_2014()
     concat_2015()
     concat_2016()
     concat_2017()
     concat_2018()
     concat_2019()
-    concat_2020()
-    concat_2021()
-    concat_2022()
-    concat_2023()
-    concat_2024()
