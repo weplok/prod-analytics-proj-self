@@ -54,6 +54,8 @@ for year in range(2013, 2025):
 
     # ДОБАВЛЯЕМ длительность поездки
     df["duration"] = round((df["ended_at"] - df["started_at"]) / 60, 2)
+    # поездки длиннее 1 дня - сокращаем до 24 часов
+    df.loc[df["duration"] > 1440, "duration"] = 1440
 
     # ДОБАВЛЯЕМ стоимости поездок
     if year in range(2013, 2020):
@@ -86,6 +88,9 @@ for year in range(2013, 2025):
         df["cost"] = df_copy.map(add_cost_2023)
     if year == 2024:
         df["cost"] = df_copy.map(add_cost_2024)
+    # За байки, припаркованные вне станций, взимается доп.плата
+    df.loc[(df["end_station_id"].isna()) & (df["member_casual"] == "member"), "cost"] += 1.2
+    df.loc[(df["end_station_id"].isna()) & (df["member_casual"] == "casual"), "cost"] += 2.4
 
     # ДОБАВЛЯЕМ дистанции - между станциями и фактические
     df["stations_dist"] = stations_dist(df[["start_lat", "start_lng", "end_lat", "end_lng"]])
@@ -101,9 +106,6 @@ for year in range(2013, 2025):
     # поездки со слишком большой дистанцией (это тестовые поездки либо выбросы)
     if year in range(2021, 2025):
         df = df[df.stations_dist < 100000]
-    # поездки длиннее 30 дней
-    if year in range(2018, 2024):
-        df = df[df.duration <= 43200]
 
     df.reset_index().set_index("ride_id").drop('index', axis=1).to_csv(f"mdatasets/tripdata-{year}.csv")
     del df
