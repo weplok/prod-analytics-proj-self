@@ -1,5 +1,5 @@
 import pandas as pd
-from datetime import date
+from sklearn.linear_model import LinearRegression
 
 
 def stations_fact_dist(output_mart):
@@ -32,7 +32,7 @@ def ride_count(output_mart):
             [year, member_ride_c, member_walk_c, procent_m_walks, casual_ride_c, casual_walk_c, procent_c_walks])
         del df
     ans = pd.DataFrame(
-        columns=["year", "member_ride_count", "member_walk_count","%_member_walks",
+        columns=["year", "member_ride_count", "member_walk_count", "%_member_walks",
                  "casual_ride_count", "casual_walk_count", "%_casual_walks"],
         data=data,
     )
@@ -43,13 +43,24 @@ def member_casual_costs(output_mart):
     data = list()
     for year in range(2013, 2025):
         df = pd.read_csv(f"mdatasets/tripdata-{year}.csv")
-        for rt in ["docked_bike", "classic_bike", "electric_bike"]:
-            rt_df = df[df.rideable_type == rt]
-            member_cost = round(rt_df[rt_df.member_casual == "member"]["cost"].sum())
-            casual_cost = round(rt_df[rt_df.member_casual == "casual"]["cost"].sum())
-            data.append([year, rt, member_cost, casual_cost])
+        for month in ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"]:
+            for MC in ["member", "casual"]:
+                df_month = df[df["start_date"].str.contains(f"{year}-{month}")]
+                df_month_MC = df_month[df_month.member_casual == MC].agg({
+                    "ride_id": "count",
+                    "cost": "sum",
+                })
+                data.append(
+                    [
+                        year,
+                        month,
+                        MC,
+                        int(df_month_MC["ride_id"]),
+                        round(df_month_MC["cost"], 2),
+                        round(df_month_MC["cost"] / df_month_MC["ride_id"], 2)
+                    ])
         del df
-    ans = pd.DataFrame(columns=["year", "rt", "member_cost", "casual_cost"], data=data)
+    ans = pd.DataFrame(columns=["year", "month", "member_casual", "count_rides", "sum_costs", "avg_check"], data=data)
     ans.reset_index().set_index("year").drop('index', axis=1).to_csv(output_mart)
 
 
@@ -74,13 +85,6 @@ def day_rides_costs():
     plt.scatter(x, y)
     plt.show()
 
-def durations():
-    df = pd.read_csv("mdatasets/tripdata-full.csv")
-    dur = df[["ride_id", "start_date", "duration", "cost"]]
-    del df
-    dur_bad = dur[dur.duration < 1][dur.duration >= 0]
-    dur_bad.to_csv("data_marts/dur_so_so.csv")
-
 
 def str_values():
     df = pd.read_csv("mdatasets/tripdata-full.csv")
@@ -92,31 +96,65 @@ def str_values():
     by.to_csv("data_marts/birthyear.csv")
 
 
-def big_dist():
-    df = pd.read_csv("mdatasets/tripdata-full.csv")
-    df_big = df[df.stations_dist > 100000]
-    del df
-    df_big.to_csv("data_marts/big_dist.csv")
+def socdem_mart():
+    data = []
+
+    for year in range(2013, 2025):
+        df = pd.read_csv(f"mdatasets/tripdata-{year}.csv")
+        df_males = df[df.gender == "Male"]
+        df_females = df[df.gender == "Female"]
+
+        year_data = {
+            "year": year,
+            "males_count": df_males["ride_id"].count(),
+            "females_count": df_females["ride_id"].count(),
+            "males_avg_by": round(df_males["birthyear"].mean(), 2),
+            "females_avg_by": round(df_females["birthyear"].mean(), 2),
+            "total_avg_by": round(df["birthyear"].mean(), 2),
+        }
+        data.append(year_data)
+
+    sd_df = pd.DataFrame(
+        columns=["year", "males_count", "females_count", "males_avg_by", "females_avg_by", "total_avg_by"],
+        data=data,
+    ).set_index("year")
+    sd_df.to_csv("data_marts/socdem_mart.csv")
 
 
-def long_rides():
-    df = pd.read_csv("mdatasets/tripdata-full.csv")
-    df_long = df[df.duration > 43200]
-    del df
-    df_long.to_csv("data_marts/long_rides.csv")
+def bikes_stations_count():
+    data = []
+    for year in range(2013, 2025):
+        df = pd.read_csv(f"mdatasets/tripdata-{year}.csv")
 
-def unreal_socdem():
-    df = pd.read_csv("mdatasets/tripdata-full.csv")
-    df_uoy = df[df.birthyear >= 2013]
-    df_uyy = df[df.birthyear <= 1918]
-    del df
-    df_uy = pd.concat([df_uoy, df_uyy]).sort_values(by="start_date")
-    df_uy.to_csv("data_marts/unreal_birthyear.csv")
+        year_data = {
+            "year": year,
+            "bikes_count": len(df["bike_id"].unique()),
+            "stations_count": len(pd.concat([df["start_station_id"], df["end_station_id"]]).unique()),
+        }
+        if year == 2020:
+            year_data["stations_count"] = len(pd.concat([df["start_station_name"], df["end_station_name"]]).unique())
+        data.append(year_data)
 
+    bs_df = pd.DataFrame(
+        columns=["year", "bikes_count", "stations_count"],
+        data=data,
+    ).set_index("year")
+
+    df_train = bs_df[bs_df.bikes_count != 1]
+    x_train = df_train[["stations_count"]]
+    y_train = df_train["bikes_count"]
+
+    model = LinearRegression()
+    model.fit(x_train, y_train)
+
+    test_df = bs_df[bs_df.bikes_count == 1]
+    x_test = test_df[["stations_count"]]
+    predictions = model.predict(x_test)
+
+    bs_df.loc[bs_df.bikes_count == 1, "bikes_count"] = predictions
+    bs_df["bikes_count"] = bs_df["bikes_count"].transform(lambda x: int(x))
+    bs_df.to_csv("data_marts/bikes_stations_count.csv")
 
 
 if __name__ == "__main__":
-    stations_fact_dist("data_marts/stations_fact_dist.csv")
-    #ride_count("data_marts/member_casual_rides.csv")
-    member_casual_costs("data_marts/member_casual_cost.csv")
-    rides_per_day("data_marts/rides_per_day.csv")
+    member_casual_costs("data_marts/costs_per_month.csv")
